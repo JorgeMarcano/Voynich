@@ -1,0 +1,27 @@
+
+# This looks through an entire book and prints each line that contains the search word
+getLineWithWord(book, searchWord)
+
+
+# Gets all words with character
+getWordWithChar(book, searchChar)
+
+
+# Gets a copy of every word that has a certain length
+getWordOfLen(book, length, ignoreNonWords=False, ignoreDuplicates=False)
+
+
+# Gets all characters that are only finals
+getCharLast(book, ignoreIsolates=False)
+
+
+# Gets all characters that are only initials
+getCharFirst(book, ignoreIsolates=False)
+
+
+# Gets all characters that are only isolates
+getCharIsolates(book)
+
+
+# Gets all characters that are only isolates
+getCharMiddles(book)
