@@ -3,12 +3,14 @@ from bookTypes import *
 from parser import setup
 
 # This looks through an entire book and prints each line that contains the search word
-def getLineWithWord(book, searchWord):
+def getLineWithWord(book, searchWord, style=None):
     for page in book.pages:
         for para in page.paragraphs:
             for line in para.lines:
                 for word in line.words:
                     if word == searchWord:
+                        if style != None and line.style != style:
+                            continue
                         print(line.print(True, page.folio, page.rectoVerso))
 
 # Gets all words with character
@@ -168,11 +170,35 @@ def getCharMiddles(book):
 # Gets the word count of certain pages, given in list of tuples [(folio, RV),()]
 def getFilteredWordCount(book, pages):
     counts = {}
-    for page in book.pages:
-        combo = (page.folio, page.rectoVerso)
-        if combo in pages:
-            mergeCounts(counts, page.getWordCount())
+    if type(pages[0]) == tuple:
+        for page in book.pages:
+            combo = (page.folio, page.rectoVerso)
+            if combo in pages:
+                mergeCounts(counts, page.getWordCount())
+    elif type(pages[0]) == int:
+        for page in book.pages:
+            if page.folio in pages:
+                mergeCounts(counts, page.getWordCount())
 
     return counts
+
+def makeWord(string):
+    isStrike = False
+    word = Word()
+    for char in string:
+        if char == '{':
+            isStrike = True
+            continue
+        elif char == '}':
+            isStrike = False
+            continue
+        word.addChar(Character(value=char, isStrikethrough=isStrike))
+
+    return word
+
+def getPage(book, folio, RV):
+    for page in book.pages:
+        if page.folio == folio and page.rectoVerso == RV:
+            return page
 
 book = setup("ZL3a-n.txt")
